@@ -51,5 +51,5 @@ body{
     align-items: center;
     border: solid 2px black;
     border-radius: 16px;
-    background-color: white;
+    /* background-color: white; */
 }
