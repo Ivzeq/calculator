@@ -159,3 +159,32 @@ decimalButton.forEach((button) => {
 deleteButton.forEach((button) =>{
     button.addEventListener('click',deleteEvent);
 })
+window.addEventListener('keydown',(e) =>{
+    if(e.key <= 9 && e.key >= 0) {
+        document.querySelector('.n' + e.key).click();
+    }
+    else if(e.key == 'd' || e.key == '/'){
+        document.querySelector('.divide').click();
+    }
+    else if(e.key == '*'){
+        document.querySelector('.multiply').click();
+    }
+    else if(e.key == '+'){
+        document.querySelector('.sum').click();
+    }
+    else if(e.key == '-'){
+        document.querySelector('.substract').click();
+    }
+    else if(e.key == 'Enter'){
+        document.querySelector('.equals').click();
+    }
+    else if(e.key == 'c' || e.key == 'Delete'){
+        document.querySelector('.clear').click();
+    }
+    else if(e.key == '.'){
+        document.querySelector('.decimal').click();
+    }
+    else if(e.key == 'Backspace'){
+        document.querySelector('.delete').click();
+    }
+})
