@@ -53,3 +53,16 @@ body{
     border-radius: 16px;
     /* background-color: white; */
 }
+
+button{
+    color: darkorange;
+}
+
+.equals{
+    color: goldenrod;
+}
+
+.number,
+.decimal{
+    color: black;
+}

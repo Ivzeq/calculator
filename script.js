@@ -17,11 +17,11 @@ function power(base,exponent){
 }
 function operate(operator,number1,number2){
     return(
-        operator == '+'? add(parseInt(number1),parseInt(number2)):
-        operator == '-'? substract(parseInt(number1),parseInt(number2)): 
-        operator == 'x'? multiply(parseInt(number1),parseInt(number2)):
-        operator == '/'? divide(parseInt(number1),parseInt(number2)):
-        operator == '^'? power(parseInt(number1),parseInt(number2)):
+        operator == '+'? add(parseFloat(number1),parseFloat(number2)):
+        operator == '-'? substract(parseFloat(number1),parseFloat(number2)): 
+        operator == 'x'? multiply(parseFloat(number1),parseFloat(number2)):
+        operator == '/'? divide(parseFloat(number1),parseFloat(number2)):
+        operator == '^'? power(parseFloat(number1),parseFloat(number2)):
         null
     );
 }
@@ -34,21 +34,22 @@ function changeStep(processStep){
 
 function numberEvent(e){
     if (calculator.step == 'firstOperand') {
-        calculator.firstOperand == 0? 
+        calculator.firstOperand == '0'? 
         calculator.firstOperand = e.target.textContent:
         calculator.firstOperand += e.target.textContent;
         resultDisplay.textContent = calculator.firstOperand;
     }
     else if (calculator.step == 'secondOperand') {
-        calculator.secondOperand == 0? 
+        calculator.secondOperand == '0'? 
         calculator.secondOperand = e.target.textContent:
         calculator.secondOperand += e.target.textContent;
         resultDisplay.textContent = calculator.firstOperand + calculator.operator + calculator.secondOperand;
     }
     else if (calculator.step == 'result') {
-        calculator.secondOperand = e.target.textContent;
-        changeStep('secondOperand');
-        resultDisplay.textContent = calculator.firstOperand + calculator.operator + calculator.secondOperand;
+        calculator.firstOperand = e.target.textContent;
+        calculator.secondOperand = '0';
+        changeStep('firstOperand');
+        resultDisplay.textContent = calculator.firstOperand; 
     }
 }
 
@@ -59,14 +60,17 @@ function operatorEvent(e) {
     }
     else if (calculator.step == 'secondOperand') {
         equalsEvent()
-        
-        calculator.firstOperand = calculator.result;
+        calculator.firstOperand = Math.round(calculator.result*100)/100;
         calculator.operator = e.target.textContent;
+        calculator.secondOperand = '0';
         resultDisplay.textContent = calculator.result;
+        changeStep('secondOperand')
     }
     else if (calculator.step == 'result') {
-        calculator.firstOperand = calculator.result;
+        calculator.firstOperand = Math.round(calculator.result*100)/100;
         calculator.operator = e.target.textContent;
+        calculator.secondOperand = '0';
+        changeStep('secondOperand');
     }
     resultDisplay.textContent = calculator.firstOperand + calculator.operator;
 }
@@ -91,6 +95,32 @@ function clearEvent(){
     resultDisplay.textContent = calculator.result;
 }
 
+function decimalEvent(e){
+
+    if (calculator.step == 'firstOperand') {
+        if (calculator.firstOperand.includes('.') == false) {
+            calculator.firstOperand += e.target.textContent;
+            resultDisplay.textContent = calculator.firstOperand;
+        }
+    }
+    else if (calculator.step == 'secondOperand') {
+        if (calculator.secondOperand.includes('.') == false) {
+            calculator.secondOperand += e.target.textContent;
+            resultDisplay.textContent = calculator.firstOperand + calculator.operator + calculator.secondOperand;
+        }
+    }
+}
+
+function deleteEvent(){
+    if (calculator.step == 'firstOperand') {
+        calculator.firstOperand = calculator.firstOperand.slice(0,-1);
+        resultDisplay.textContent = calculator.firstOperand;
+    }
+    else if (calculator.step == 'secondOperand') {
+        calculator.secondOperand = calculator.secondOperand.slice(0,-1);
+        resultDisplay.textContent = calculator.firstOperand + calculator.operator + calculator.secondOperand;
+    }
+}
 //------------------------------------------------------------------------
 
 let calculator = {
@@ -104,9 +134,10 @@ let calculator = {
 const resultDisplay = document.querySelector('.result-display');
 const equalsButton = document.querySelectorAll('.equals');
 const clearButton = document.querySelectorAll('.clear');
-const deleteButton = document.querySelectorAll('delete');
+const deleteButton = document.querySelectorAll('.delete');
 const numbers = document.querySelectorAll('.number');
 const operators = document.querySelectorAll('.operator')
+const decimalButton = document.querySelectorAll('.decimal')
 
 resultDisplay.textContent = calculator.result;
 
@@ -122,3 +153,9 @@ clearButton.forEach((button) =>{
 equalsButton.forEach((button) =>{
     button.addEventListener('click', equalsEvent)
 });
+decimalButton.forEach((button) => {
+    button.addEventListener('click', decimalEvent);
+})
+deleteButton.forEach((button) =>{
+    button.addEventListener('click',deleteEvent);
+})
