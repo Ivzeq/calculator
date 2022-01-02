@@ -10,6 +10,7 @@ body{
     justify-content: center;
     align-items: center;
     margin: 0;
+    background-color: #1f2030;
 }
 
 .main-container{
@@ -19,6 +20,7 @@ body{
     border-radius: 32px;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 .result-container{
